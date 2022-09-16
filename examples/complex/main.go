@@ -2,7 +2,7 @@ package main
 
 import (
 	"flag"
-	"github.com/lukasjarosch/go-docx"
+	"github.com/sonnt0309/go-docx"
 )
 
 var templatePath, outputPath string

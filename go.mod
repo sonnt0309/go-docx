@@ -1,4 +1,4 @@
-module github.com/lukasjarosch/go-docx
+module github.com/sonnt0309/go-docx
 
 go 1.14
 

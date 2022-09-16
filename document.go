@@ -131,6 +131,29 @@ func newDocument(zipFile *zip.Reader, path string, docxFile *os.File) (*Document
 	return doc, nil
 }
 
+// regexpCompile is text of regexp MustCompile
+// {[a-zA-Z0-9_]*}
+//
+// replaceSpec is text of NewReplacer
+// Example: []string{"{", "", "}", ""}
+//
+
+func (d *Document) GetVariableInFile(regexpCompile string, replaceSpec ...string) (map[string]string, error) {
+	r := strings.NewReplacer(replaceSpec...)
+	re := regexp.MustCompile(regexpCompile)
+	result := make(map[string]string, 0)
+	for _, name := range d.files {
+		match := re.FindAllStringSubmatch(string(name), -1)
+		for _, v := range match {
+			for _, v1 := range v {
+				value := r.Replace(v1)
+				result[v1] = value
+			}
+		}
+	}
+	return result, nil
+}
+
 // ReplaceAll will iterate over all files and perform the replacement according to the PlaceholderMap.
 func (d *Document) ReplaceAll(placeholderMap PlaceholderMap) error {
 	for name := range d.files {

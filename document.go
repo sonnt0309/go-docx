@@ -138,9 +138,9 @@ func newDocument(zipFile *zip.Reader, path string, docxFile *os.File) (*Document
 // Example: []string{"{", "", "}", ""}
 //
 
-func (d *Document) GetVariableInFile(regexpCompile string, replaceSpec ...string) (map[string]string, error) {
-	r := strings.NewReplacer(replaceSpec...)
-	re := regexp.MustCompile(regexpCompile)
+func (d *Document) GetVariableInFile() (map[string]string, error) {
+	r := strings.NewReplacer("{", "", "}", "")
+	re := regexp.MustCompile(`{[a-zA-Z0-9_]*}`)
 	result := make(map[string]string, 0)
 	for _, name := range d.files {
 		match := re.FindAllStringSubmatch(string(name), -1)

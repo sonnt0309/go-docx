@@ -1,6 +1,10 @@
 package docx
 
-import "testing"
+import (
+	"errors"
+	"fmt"
+	"testing"
+)
 
 func BenchmarkDocument_ReplaceAll(b *testing.B) {
 	for n := 0; n < b.N; n++ {
@@ -20,6 +24,14 @@ func BenchmarkDocument_ReplaceAll(b *testing.B) {
 		doc, err := Open("./examples/simple/template.docx")
 		if err != nil {
 			panic(err)
+		}
+
+		result, err := doc.GetVariableInFile()
+		if err != nil {
+			panic(err)
+		}
+		if len(result) != 1 {
+			panic(errors.New("result != 1"))
 		}
 
 		err = doc.ReplaceAll(replaceMap)
